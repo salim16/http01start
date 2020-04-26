@@ -67,7 +67,12 @@ export class AppComponent implements OnInit {
   }
 
   onClearPosts() {
-    // Send Http request
+    // subscribe will only run when everything is alright on the server side.
+    this.postService.deletePosts().subscribe(
+      () => {
+        this.loadedPosts = [];
+      }
+    )
   }
 
   private fetchPosts() {
@@ -110,7 +115,7 @@ export class AppComponent implements OnInit {
 
      // We mention the expected return type in the get method of http only 
          // and not in the responseData .
-         
+
    /* this.http.get<{ [key: string]: Post }>
               ('https://ng-complete-guide-57894.firebaseio.com/posts.json')
     .pipe(

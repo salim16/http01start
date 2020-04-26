@@ -20,7 +20,7 @@ export class PostService {
         postData)
         .subscribe(responseData => {
             console.log(responseData);
-            this.fetchPosts();
+            //this.fetchPosts();
         });
     }
 
@@ -101,5 +101,9 @@ export class PostService {
             return postsArray;
           })
         );
+    }
+
+    deletePosts() {
+        return this.http.delete("https://ng-complete-guide-57894.firebaseio.com/posts.json");
     }
 }
