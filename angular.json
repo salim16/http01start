@@ -24,7 +24,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": []
           },
@@ -119,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "http01start"
+    }
+  },
+  "defaultProject": "http01start",
+  "cli": {
+    "analytics": "0080620c-34cb-4c16-b246-242c7c7f7cb6"
+  }
 }
