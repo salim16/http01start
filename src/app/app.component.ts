@@ -9,7 +9,7 @@ import { Post } from './post.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  loadedPosts = [];
+  loadedPosts: Post[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,8 @@ export class AppComponent implements OnInit {
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
     //this.http.post('https://ng-complete-guide-57894.firebaseio.com/posts.json', postData)
-    this.http.post<{name: string}>('https://ng-complete-guide-57894.firebaseio.com/posts.json', postData)
+    this.http.post<{name: string}>('https://ng-complete-guide-57894.firebaseio.com/posts.json',
+     postData)
       .subscribe(responseData => {
         console.log(responseData);
       });
@@ -105,6 +106,7 @@ export class AppComponent implements OnInit {
     // "-M5pcNkmj7tlfR2n-iKM":{"content":"qiudhqie","title":"yuahd"},
     // "-M5pyya3AWrYcnjrg6I6":{"content":"asodh","title":"jagd"}}
     .subscribe(posts => {
+      this.loadedPosts = posts;
       console.log(posts);
     })
   }
