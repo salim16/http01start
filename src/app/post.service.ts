@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { map, catchError } from 'rxjs/operators'
+import { HttpClient, HttpHeaders, HttpParams, HttpEventType } from '@angular/common/http';
+import { map, catchError, tap } from 'rxjs/operators'
 import { Post } from './post.model';
 import { Subject, throwError } from 'rxjs';
 
@@ -19,9 +19,15 @@ export class PostService {
     createAndStorePost(title: string, content: string) {
         const postData: Post = {title: title, content: content };
         this.http.post<{ name: string }>('https://ng-complete-guide-57894.firebaseio.com/posts.json',
-        postData)
+        postData, 
+        {
+          observe: "response"
+        }) // try removing the observe part, then it only gives the default javascript result withot extra info
+        // observe : "response" gives back complete response along with header etc.
+        // observe : "body" is the default value
         .subscribe(responseData => {
             console.log(responseData);
+            console.log(responseData.body); // it will give the javascript response
             //this.fetchPosts();
         }, error => {
           this.error.next(error.message);
@@ -126,6 +132,22 @@ export class PostService {
     }
 
     deletePosts() {
-        return this.http.delete("https://ng-complete-guide-57894.firebaseio.com/posts.json");
+        return this.http.delete("https://ng-complete-guide-57894.firebaseio.com/posts.json",
+        {
+          observe: "events"
+        })
+        .pipe(
+          tap(event => {
+            console.log(event);
+            // make the observe as "events" to achive more granular request and 
+            // control it on every step, to update the UI accordingly
+            if(event.type === HttpEventType.Sent) {
+              // ..
+            }
+            if(event.type === HttpEventType.Response) {
+              console.log(event.body);
+            }
+          })
+        );
     }
 }
