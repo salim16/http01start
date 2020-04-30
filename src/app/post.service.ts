@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators'
 import { Post } from './post.model';
 import { Subject, throwError } from 'rxjs';
@@ -91,12 +91,21 @@ export class PostService {
 
 
         // Now we only return the observable and do not subscribe here.
+
+        let searchParams = new HttpParams();
+        searchParams = searchParams.append('print', 'pretty');
+        searchParams = searchParams.append('custom', 'key');
         return this.http.get<{ [key: string]: Post }>
                   ('https://ng-complete-guide-57894.firebaseio.com/posts.json',
                   {
-                    headers: new HttpHeaders(
+                    /*headers: new HttpHeaders(
                       {"Custome-Header1" : "Hello", "Custome-Header2" : ["Bye!", "TakeCare!"]}
-                    )
+                    ), */
+                    headers: {"Custome-Header1" : "Hello", "Custome-Header2" : ["Bye!", "TakeCare!"]},
+                    
+                    // params: new HttpParams().set('print', 'pretty')
+                    // params: searchParams,
+                    params: {"print": "pretty", "list": ["2","3","5"]}
                   })
         .pipe(
           map(responseData => {
