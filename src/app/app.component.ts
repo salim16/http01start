@@ -12,6 +12,7 @@ import { PostService } from './post.service';
 export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   isFetching: boolean = false;
+  error = null;
 
   constructor(private http: HttpClient, private postService: PostService) {}
 
@@ -35,8 +36,9 @@ export class AppComponent implements OnInit {
         console.log(posts);
         this.loadedPosts = posts;
         this.isFetching = false;
-      }
-    )
+      }, error => {
+        this.error = error.message;
+      });
   }
 
   // In case of create post, we subscribe in the component itself,
@@ -51,6 +53,8 @@ export class AppComponent implements OnInit {
         console.log(responseData);
       });*/
       this.postService.createAndStorePost(postData.title, postData.content);
+      this.onFetchPosts(); // This won't work because subscribe method is still working and 
+      // the post is not yet created and this method would get called
   }
 
   onFetchPosts() {
@@ -62,8 +66,10 @@ export class AppComponent implements OnInit {
         console.log(posts);
         this.loadedPosts = posts;
         this.isFetching = false;
-      }
-    )
+      }, error => {
+        this.error = error.message;
+        console.log(error);
+      });
   }
 
   onClearPosts() {
