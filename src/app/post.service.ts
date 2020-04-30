@@ -10,6 +10,8 @@ export class PostService {
     // postsTracker = new Subject<Post[]>();
     // we do not do it this way in case of HTTPS
 
+    error = new Subject<string>();
+
     constructor(private http: HttpClient) {
 
     }
@@ -21,6 +23,8 @@ export class PostService {
         .subscribe(responseData => {
             console.log(responseData);
             //this.fetchPosts();
+        }, error => {
+          this.error.next(error.message);
         });
     }
 

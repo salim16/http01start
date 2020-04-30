@@ -17,9 +17,11 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient, private postService: PostService) {}
 
   ngOnInit() {
+    this.postService.error.subscribe(errorMessage => {
+      this.error = errorMessage;
+    });
+
     // this.postService.fetchPosts();
-
-
 
     /* this.postService.postsTracker.subscribe(
       (posts: Post[]) => {
