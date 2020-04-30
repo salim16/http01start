@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators'
+import { map, catchError } from 'rxjs/operators'
 import { Post } from './post.model';
-import { Subject } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class PostService {
@@ -103,6 +103,10 @@ export class PostService {
               }
             }
             return postsArray;
+          }),
+          catchError(errorRes => {
+            // Send to analytics server
+            return throwError(errorRes);
           })
         );
     }
