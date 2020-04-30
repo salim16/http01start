@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators'
 import { Post } from './post.model';
 import { Subject, throwError } from 'rxjs';
@@ -92,7 +92,12 @@ export class PostService {
 
         // Now we only return the observable and do not subscribe here.
         return this.http.get<{ [key: string]: Post }>
-                  ('https://ng-complete-guide-57894.firebaseio.com/posts.json')
+                  ('https://ng-complete-guide-57894.firebaseio.com/posts.json',
+                  {
+                    headers: new HttpHeaders(
+                      {"Custome-Header1" : "Hello", "Custome-Header2" : ["Bye!", "TakeCare!"]}
+                    )
+                  })
         .pipe(
           map(responseData => {
             const postsArray: Post[] = [];
