@@ -28,7 +28,7 @@ export class PostService {
         .subscribe(responseData => {
             console.log(responseData);
             console.log(responseData.body); // it will give the javascript response
-            //this.fetchPosts();
+            // this.fetchPosts();
         }, error => {
           this.error.next(error.message);
         });
@@ -134,13 +134,14 @@ export class PostService {
     deletePosts() {
         return this.http.delete("https://ng-complete-guide-57894.firebaseio.com/posts.json",
         {
-          observe: "events"
+          observe: "events",
+          responseType: "json"
         })
         .pipe(
           tap(event => {
             console.log(event);
             // make the observe as "events" to achive more granular request and 
-            // control it on every step, to update the UI accordingly
+            // control it on every step, to update the UI accordingly 
             if(event.type === HttpEventType.Sent) {
               // ..
             }
